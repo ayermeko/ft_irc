@@ -1,4 +1,4 @@
-#include "../includes/Server.hpp"
+#include "Server.hpp"
 
 Server::Server(const std::string &port, const std::string &pass) 
     : _host("127.0.0.1"), _port(port), _pass(pass)
@@ -52,7 +52,7 @@ void            Server::client_connect()
 
 void Server::disconnect_handle(int fd)
 {
-
+    (void)fd;
 }
 
 int Server::socket_create()
