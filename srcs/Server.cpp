@@ -3,12 +3,56 @@
 Server::Server(const std::string &port, const std::string &pass) 
     : _host("127.0.0.1"), _port(port), _pass(pass)
 {
+    _server_started = true;
     _socket = socket_create();
 }
 
 void Server::start()
 {
+    // poll is used to connect multiple socket fds, for one and more numbers of clients
+    pollfd srv;
+    srv.fd = _socket;
+    srv.events = POLLIN;
+    srv.revents = 0;
+
+    _pfds.push_back(srv);
+    //TODO: maybe to have the message to display that the server is listening...
+    while (_server_started)
+    {
+        if (poll(&_pfds[0], _pfds.size(), -1) < 0)
+            throw std::runtime_error("Error while polling from fd!");
+        for (pfd_iterator it = _pfds.begin(); it != _pfds.end(); it++)
+        {
+            if (it->revents == 0)
+                continue;
+            if ((it->revents & POLLHUP) == POLLHUP)
+            {
+                this->disconnect_handle(it->fd);
+                break;
+            }
+            if ((it->revents & POLLIN) == POLLIN)
+            {
+                if (it->fd == _socket)
+                {
+                    this->client_connect();
+                    break;
+                }
+                //Client message
+            }
+        }
+        
+    }
     
+}
+
+void            Server::client_connect()
+{
+    
+}
+
+void Server::disconnect_handle(int fd)
+{
+
 }
 
 int Server::socket_create()
