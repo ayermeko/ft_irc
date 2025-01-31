@@ -19,8 +19,10 @@ void Server::start()
     //TODO: maybe to have the message to display that the server is listening...
     while (_server_started)
     {
+        // TODO: fix, may occur some issues here
         if (poll(&_pfds[0], _pfds.size(), -1) < 0)
             throw std::runtime_error("Error while polling from fd!");
+        // if the event has occured handle it
         for (pfd_iterator it = _pfds.begin(); it != _pfds.end(); it++)
         {
             if (it->revents == 0)
@@ -34,10 +36,10 @@ void Server::start()
             {
                 if (it->fd == _socket)
                 {
-                    this->client_connect();
+                    this->client_accept();
                     break;
                 }
-                //Client message
+                this->client_message(it->fd);
             }
         }
         
@@ -45,8 +47,18 @@ void Server::start()
     
 }
 
-void            Server::client_connect()
+void            Server::client_message(int fd)
 {
+    
+}
+
+void            Server::client_accept()
+{
+    int fd;
+    sockaddr_in addr;
+    socklen_t size = sizeof(addr);
+    if ((fd = accept(_socket, (sockaddr *)&addr, &size)) < 0) // TODO: my not be compatble with C++98
+        throw std::runtime_error("Error while accepting a new client!");
     
 }
 

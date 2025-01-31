@@ -24,17 +24,22 @@ class Server
 {
     private:
         typedef std::vector<pollfd>::iterator       pfd_iterator;
+        bool _server_started;
+        int  _socket;
 
         const std::string _host;
         const std::string _port;
         const std::string _pass;
-        int _socket;
         std::vector<pollfd> _pfds;
-        bool _server_started;
+
+        Server();
+        Server(const Server &src);
     public:
         Server(const std::string &port, const std::string &pass);
+        ~Server();
         int socket_create();
         void start();
         void disconnect_handle(int fd);
-        void client_connect();
+        void client_accept();
+        void client_message(int fd);
 };
