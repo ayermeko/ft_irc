@@ -1,20 +1,20 @@
 #include <iostream>
+#include "includes/Server.hpp"
 
 int main(int argc, char const *argv[])
 {
     if (argc > 3)
     {
-        // throw error
+        throw (std::runtime_error("Guide: ./ircserv <port> <password>"));
     }
-    // create the server
+    Server server(argv[1], argv[2]);
     try
     {
-        /* code */
+        return (0);
     }
     catch(const std::exception& e)
     {
         std::cerr << e.what() << '\n';
+        return (1);
     }
-    
-    return 0;
 }

@@ -1,8 +1,14 @@
 #include "../includes/Server.hpp"
 
-Server::Server(const std::string &port, const std::string &pass) : _port(port), _pass(pass)
+Server::Server(const std::string &port, const std::string &pass) 
+    : _host("127.0.0.1"), _port(port), _pass(pass)
 {
     _socket = socket_create();
+}
+
+void Server::start()
+{
+    
 }
 
 int Server::socket_create()
@@ -16,7 +22,7 @@ int Server::socket_create()
     if (fcntl(sockfd, F_SETFL, O_NONBLOCK))
         throw std::runtime_error("Error: while setting socket to NON-BLOCKING!");
 
-    struct sockaddr_in  serv_addr = {};
+    struct sockaddr_in  serv_addr = {}; // to set all to NULL.
     bzero((char*) &serv_addr, sizeof(serv_addr));
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_addr.s_addr = INADDR_ANY;

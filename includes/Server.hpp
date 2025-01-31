@@ -25,9 +25,11 @@ class Server
     private:
         const std::string _port;
         const std::string _pass;
+        const std::string _host;
         int _socket;
     public:
         Server(const std::string &port, const std::string &pass);
         //TODO: Ortodox Conon.
         int socket_create();
+        void start();
 };
