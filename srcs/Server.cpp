@@ -59,7 +59,22 @@ void            Server::client_accept()
     socklen_t size = sizeof(addr);
     if ((fd = accept(_socket, (sockaddr *)&addr, &size)) < 0) // TODO: my not be compatble with C++98
         throw std::runtime_error("Error while accepting a new client!");
-    
+    // adding the new client fd in the poll
+    pollfd pfd;
+    pfd.fd = fd; // new fd form the accept command
+    pfd.events = POLLIN;
+    _pfds.push_back(pfd);
+
+    char hostname_buffer[NI_MAXHOST];
+    int res = getnameinfo((struct sockaddr *) &addr, sizeof(addr), hostname_buffer, NI_MAXHOST, NULL, 0, NI_NUMERICSERV);
+    if (res != 0)
+        throw std::runtime_error("Error: while getting a hostname on a new client!");
+    Client* client = new Client(fd, ntohs(addr.sin_port), hostname_buffer);
+    _clients.insert(std::make_pair(fd, client));
+
+    // Construct the message using string concatenation
+    std::string message = client->getHostname() + ":" + std::to_string(client->getPort()) + " has connected.";
+    //TODO: log message creation needed
 }
 
 void Server::disconnect_handle(int fd)

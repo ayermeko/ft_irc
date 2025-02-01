@@ -18,6 +18,8 @@
 
 #include "Client.hpp"
 
+class Client;
+
 #define MAX_CONNS 192
 
 class Server
@@ -31,6 +33,7 @@ class Server
         const std::string _port;
         const std::string _pass;
         std::vector<pollfd> _pfds;
+        std::map<int, Client *> _clients;
 
         Server();
         Server(const Server &src);
