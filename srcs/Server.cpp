@@ -4,6 +4,7 @@ Server::Server(const std::string &port, const std::string &pass)
     : _host("127.0.0.1"), _port(port), _pass(pass)
 {
     _server_started = true;
+    //TODO: starting server message
     _socket = socket_create();
 }
 
@@ -16,6 +17,7 @@ void Server::start()
     srv.revents = 0;
 
     _pfds.push_back(srv);
+    log("Server is listening...");
     //TODO: maybe to have the message to display that the server is listening...
     while (_server_started)
     {

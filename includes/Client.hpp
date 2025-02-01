@@ -4,6 +4,7 @@
 #include <sys/poll.h>
 
 #include <string>
+#include "messages.hpp"
 #include <vector>
 
 class Client
