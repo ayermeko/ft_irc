@@ -49,9 +49,16 @@ class Server
     public:
         Server(const std::string &port, const std::string &pass);
         ~Server();
-        void            start();
+
+        std::string     getPass() const;
+        Client*         getClient(const std::string &nickname);
+        Channel*        getChannel(const std::string &channelname);
+
         int             socket_create();
-        void            disconnect_handle(int fd);
+        void            start();
         void            client_accept();
         void            client_message(int fd);
+        void            disconnect_handle(int fd);
+
+        Channel*        create_channel(const std::string &name, const std::string &key, Client *client);
 };

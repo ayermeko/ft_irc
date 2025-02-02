@@ -11,6 +11,39 @@ Server::Server(const std::string &port, const std::string &pass)
 
 Server::~Server()
 {
+    delete _parser;
+
+    for (size_t i = 0; i < _channels.size(); i++)
+    delete _clients[i];
+}
+
+std::string Server::getPass() const {return _pass;}
+
+Client      *Server::getClient(const std::string &nickname)
+{
+    for (client_iterator it_b = _clients.begin(), it_e = _clients.end(); it_b != it_e; ++it_b)
+    {
+        if (!nickname.compare(it_b->second->getNickname()))
+            return it_b->second;
+    }
+    
+    return NULL;
+}
+
+Channel     *Server::getChannel(const std::string &channelname)
+{
+    channel_iterator it_b = _channels.begin();
+    channel_iterator it_e = _channels.begin();
+
+    while (it_b != it_e)
+    {
+        if (!channelname.compare((*it_b)->getName()))
+            return (*it_b);
+
+        it_b++;
+    }
+
+    return NULL;
 }
 
 void Server::start()
@@ -123,6 +156,14 @@ void Server::disconnect_handle(int fd)
     {
         std::cout << "Error while disconnecting! " << e.what() << std::endl;
     }
+}
+
+Channel *Server::create_channel(const std::string &name, const std::string &key, Client *client)
+{
+    Channel *channel = new Channel(name, key, client);
+    _channels.push_back(channel);
+
+    return channel;
 }
 
 int Server::socket_create()
