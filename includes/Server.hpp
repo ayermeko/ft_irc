@@ -57,8 +57,8 @@ class Server
         int             socket_create();
         void            start();
         void            client_accept();
-        void            client_message(int fd);
-        void            disconnect_handle(int fd);
+        void            client_message(int fd); // not finished
+        void            disconnect_handle(int fd); // not finished
 
         Channel*        create_channel(const std::string &name, const std::string &key, Client *client);
 };

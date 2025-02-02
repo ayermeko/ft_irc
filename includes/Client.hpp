@@ -24,25 +24,35 @@ class Client
         std::string     _realname;
         std::string     _hostname;
         int             _state;
-
         Channel*        _channel;
         
         Client();
         Client(const Client &src);
     public:
         Client(int fd, int port, const std::string &hostname);
+        ~Client();
 
         //Getters
-        int         getFd() const;
-        int         getPort() const;
-        std::string getNickname() const;
-        std::string getUsername() const;
-        std::string getRealname() const;
-        std::string getHostname() const;
-        int         getPort() const;
-        void        leave();
-        void        write(const std::string& message) const;
-        std::string getPrefix() const;
+        int             getFd() const;
+        int             getPort() const;
+        std::string     getNickname() const;
+        std::string     getUsername() const;
+        std::string     getRealname() const;
+        std::string     getHostname() const;
+        Channel*        getChannel() const;
+        std::string     getPrefix() const;
 
-        ~Client();
+        //Setters
+        void            setNickname(const std::string &nickname);
+        void            setUsername(const std::string &username);
+        void            setRealname(const std::string &realname);
+        void            setState(int state);
+        void            setChannel(Channel *channel);
+
+        bool            is_registered() const;
+
+        // I/O actions
+        void            write(const std::string& message) const;
+        void            leave();
+
 };

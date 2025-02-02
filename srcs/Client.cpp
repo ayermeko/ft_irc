@@ -1,15 +1,15 @@
 #include "Client.hpp"
 
 Client::Client(int fd, int port, const std::string &hostname) :
-    _fd(fd), _port(port), _hostname(hostname), _state(HANDSHAKE) {}
+    _fd(fd), _port(port), _hostname(hostname), _state(HANDSHAKE), _channel(NULL) {}
 
-int         Client::getFd()       const {return _fd;}
-int         Client::getPort()     const {return _port;}
-std::string Client::getNickname() const {return _nickname;}
-std::string Client::getUsername() const {return _username;}
-std::string Client::getRealname() const {return _realname;}
-std::string Client::getHostname() const {return _hostname;}
-
+int             Client::getFd()       const {return _fd;}
+int             Client::getPort()     const {return _port;}
+std::string     Client::getNickname() const {return _nickname;}
+std::string     Client::getUsername() const {return _username;}
+std::string     Client::getRealname() const {return _realname;}
+std::string     Client::getHostname() const {return _hostname;}
+Channel         *Client::getChannel() const {return _channel;}
 std::string     Client::getPrefix() const 
 {
     std::string username = _username.empty() ? "" : "!" + _username;
@@ -17,6 +17,14 @@ std::string     Client::getPrefix() const
 
     return _nickname + username + hostname;
 }
+
+void            Client::setNickname(const std::string &nickname){_nickname = nickname;}
+void            Client::setUsername(const std::string &username){_username = username;}
+void            Client::setRealname(const std::string &realname){_realname = realname;}
+void            Client::setState(int state){ _state = state;}
+void            Client::setChannel(Channel *channel){_channel = channel;}
+
+bool            Client::is_registered() const { return (_state == REGISTERED);}
 
 void            Client::leave()
 {
