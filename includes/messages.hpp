@@ -5,6 +5,8 @@
 #include <iostream>
 #include <string>
 
+#define RPL_PART(source, channel)                       ":" + source + " PART :" + channel
+
 static inline void log(const std::string& message) {
     // Get the current time and format it
     time_t rawtime;

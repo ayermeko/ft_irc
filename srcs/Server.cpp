@@ -5,6 +5,7 @@ Server::Server(const std::string &port, const std::string &pass)
 {
     _server_started = true;
     _socket = socket_create();
+    _parser = new Parser(this);
     log("Server is starting...");
 }
 
