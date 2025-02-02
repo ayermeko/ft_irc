@@ -24,8 +24,8 @@ class Client;
 
 class Server
 {
+    typedef std::vector<pollfd>::iterator       pfd_iterator;
     private:
-        typedef std::vector<pollfd>::iterator       pfd_iterator;
         bool _server_started;
         int  _socket;
 
@@ -40,9 +40,9 @@ class Server
     public:
         Server(const std::string &port, const std::string &pass);
         ~Server();
-        int socket_create();
-        void start();
-        void disconnect_handle(int fd);
-        void client_accept();
-        void client_message(int fd);
+        int             socket_create();
+        void            start();
+        void            disconnect_handle(int fd);
+        void            client_accept();
+        void            client_message(int fd);
 };

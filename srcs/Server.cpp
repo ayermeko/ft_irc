@@ -4,8 +4,12 @@ Server::Server(const std::string &port, const std::string &pass)
     : _host("127.0.0.1"), _port(port), _pass(pass)
 {
     _server_started = true;
-    //TODO: starting server message
     _socket = socket_create();
+    log("Server is starting...");
+}
+
+Server::~Server()
+{
 }
 
 void Server::start()
@@ -21,8 +25,7 @@ void Server::start()
     //TODO: maybe to have the message to display that the server is listening...
     while (_server_started)
     {
-        // TODO: fix, may occur some issues here
-        if (poll(&_pfds[0], _pfds.size(), -1) < 0)
+        if (poll(&_pfds[0], _pfds.size(), -1) < 0) // TODO: fix, may occur some issues here
             throw std::runtime_error("Error while polling from fd!");
         // if the event has occured handle it
         for (pfd_iterator it = _pfds.begin(); it != _pfds.end(); it++)
@@ -49,8 +52,36 @@ void Server::start()
     
 }
 
+static std::string     read_message(int fd)
+{
+    std::string message;
+
+    char buffer[100];
+    bzero(buffer, 100);
+    while (!strstr(buffer, "\n"))
+    {
+        bzero(buffer, 100);
+
+        if ((recv(fd, buffer, 100, 0) < 0) && (errno != EWOULDBLOCK))
+            throw std::runtime_error("Error while reading buffer from a client!");
+        message.append(buffer);
+    }
+    return (message);
+}
+
 void            Server::client_message(int fd)
 {
+    try
+    {
+        Client*     client = _clients.at(fd);
+        std::string message = read_message(fd);
+
+        // TODO: Invent invoke command for the irssi server
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << "Error while handling the client message! " << e.what() << std::endl;
+    }
     
 }
 
@@ -76,18 +107,27 @@ void            Server::client_accept()
 
     // Construct the message using string concatenation
     std::string message = client->getHostname() + ":" + std::to_string(client->getPort()) + " has connected.";
-    //TODO: log message creation needed
+    log(message);
 }
 
 void Server::disconnect_handle(int fd)
 {
-    (void)fd;
+    try
+    {
+        Client* client = _clients.at(fd);
+
+        client->leave();
+    }
+    catch(const std::exception& e)
+    {
+        std::cout << "Error while disconnecting! " << e.what() << std::endl;
+    }
 }
 
 int Server::socket_create()
 {
     int sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd == -1)
+    if (sockfd < 0)
         throw (std::runtime_error("Socket creation faild!"));
     int optval = 1;
     if (setsockopt(sockfd, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval)))
