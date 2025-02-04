@@ -18,6 +18,7 @@
 #include <ctime>
 #include "Client.hpp"
 #include "Channel.hpp"
+#include "messanges.hpp"
 
 class Cilent;
 class Channel;

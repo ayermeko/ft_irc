@@ -128,7 +128,7 @@ void                        Server::reciveNewData(int fd)
     ssize_t bytes = recv(fd, buff, sizeof(buff) - 1 , 0);
     if (bytes <= 0)
     {
-        //TODO: log message that the client is disconnected.
+        log("\033[0;33m", "Client is disconnected!");
         removeChannel(fd);
         removeClient(fd);
         removeFds(fd);
