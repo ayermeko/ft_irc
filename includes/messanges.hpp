@@ -8,6 +8,8 @@ class Channel;
 class Client;
 class Server;
 
+#define RED "sdfsd"
+
 #include <iostream>
 #include <string>
 #include <chrono>
