@@ -3,15 +3,38 @@
 Server::Server(){this->_socket = -1;}
 Server::~Server(){}
 Server::Server(Server const &src) { *this = src; }
-Server &Server::operator=(Server const &src){(void)src;}
+Server                      &Server::operator=(Server const &src){(void)src;}
 
 // getters
 int                         Server::getFd() const{return _socket;}
 int                         Server::getPort() const{return _port;}
 std::string                 Server::getPass() const{return _pass;}
-Client*                     Server::getClient(int fd) const{return ;}
-Client*                     Server::getClientNick(std::string nickname){return ;}
-Channel*                    Server::getChannel(std::string name){return ;}
+Client*                     Server::getClient(int fd)
+{
+    for (size_t i = 0; i < this->_clients.size(); i++)
+    {
+        if (this->_clients[i].getFd() == fd)
+            return &(this->_clients[i]);
+    }
+    return NULL;
+}
+Client*                     Server::getClientNick(std::string nickname)
+{
+	for (size_t i = 0; i < this->_clients.size(); i++)
+    {
+		if (this->_clients[i].getNickname() == nickname)
+			return &(this->_clients[i]);
+	}
+	return NULL;
+}
+Channel*                    Server::getChannel(std::string name)
+{
+	for (size_t i = 0; i < this->_channels.size(); i++){
+		if (this->_channels[i].getName() == name)
+			return &_channels[i];
+	}
+	return NULL;
+}
 // setters
 void                        Server::setFd(int socket){_socket = socket;}
 void                        Server::setPort(int port){_port = port;}
@@ -21,8 +44,20 @@ void                        Server::addClient(Client nclient){_clients.push_back
 void                        Server::addChannel(Channel nchannel){_channels.push_back(nchannel);}
 void                        Server::addFds(pollfd npfd){_pfds.push_back(npfd);}
 // remove&clear
-void                        Server::removeClient(int fd){}
-void                        Server::removeChannel(int fd){}
+void                        Server::removeClient(int fd)
+{
+    for (size_t i = 0; i < this->_clients.size(); i++){
+		if (this->_clients[i].getFd() == fd)
+			{this->_clients.erase(this->_clients.begin() + i); return;}
+	}
+}
+void                        Server::removeChannel(std::string name)
+{
+    for (size_t i = 0; i < this->_channels.size(); i++){
+		if (this->_channels[i].getName() == name)
+			{this->_channels.erase(this->_channels.begin() + i); return;}
+	}
+}
 void                        Server::removeFds(int fd){}
 void                        Server::removeChannels(int fd){}
 // error msgs
@@ -62,7 +97,7 @@ void                        Server::init(int port, std::string pass)
     this->_pass = pass;
     this->_port = port;
 
-    //TODO: log fucntion and say that the server started and it is waiting for  the connecting
+    log("\e[1;32m" ,"Server started, waiting for the connections...");
     while (Server::_signal_f == false)
     {
         if ((poll(&_pfds[0], _pfds.size(), -1) == -1) && Server::_signal_f == false)
@@ -129,7 +164,7 @@ void                        Server::reciveNewData(int fd)
     if (bytes <= 0)
     {
         log("\033[0;33m", "Client is disconnected!");
-        removeChannel(fd);
+        removeChannels(fd);
         removeClient(fd);
         removeFds(fd);
         close(fd);

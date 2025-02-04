@@ -46,7 +46,7 @@ class Server
         int                         getFd() const;
         int                         getPort() const;
         std::string                 getPass() const;
-        Client*                     getClient(int fd) const;
+        Client*                     getClient(int fd);
         Client*                     getClientNick(std::string nickname);
         Channel*                    getChannel(std::string name);
         /* Setters */
@@ -61,7 +61,7 @@ class Server
         void                        addFds(pollfd npfd);
         /* Remove&Clear methods */
         void                        removeClient(int fd);
-        void                        removeChannel(int fd);
+        void                        removeChannel(std::string name);
         void                        removeFds(int fd);
         void                        removeChannels(int fd);
         /* Send methods */
