@@ -62,8 +62,18 @@ void                        Server::removeChannel(std::string name)
 			{this->_channels.erase(this->_channels.begin() + i); return;}
 	}
 }
-void                        Server::removeFds(int fd){(void)fd;}
-void                        Server::removeChannels(int fd){(void)fd;}
+void                        Server::removeFds(int fd)
+{
+   	for (size_t i = 0; i < this->_pfds.size(); i++){
+		if (this->_pfds[i].fd == fd)
+			{this->_pfds.erase(this->_pfds.begin() + i); return;}
+	}
+}
+void                        Server::removeChannels(int fd)
+{
+    (void)fd;
+    //TODO: complete the Channels to finish this part
+}
 // error msgs
 void                        Server::sendError(int code, std::string clientname, int fd, std::string msg)
 {
@@ -84,7 +94,7 @@ void                        Server::sendError(int code, std::string clientname, 
 void                        Server::_sendResponse(std::string response, int fd)
 {
     if(send(fd, response.c_str(), response.size(), 0) == -1)
-	std::cerr << "Response send() faild" << std::endl;
+	    std::cerr << "Response send() faild" << std::endl;
 }
 // signal Handle
 bool Server::_signal_f = false;
@@ -94,14 +104,24 @@ void                 Server::signalHandler(int signum)
 	std::cout << std::endl << "Signal Received!" << std::endl;
     Server::_signal_f = true;
 }
-void                        Server::closeFds(){}
+void                        Server::closeFds()
+{
+	for(size_t i = 0; i < _clients.size(); i++){
+        log(RED, "Client <" + my_itos(_clients[i].getFd()) + "> Disconnected");
+        close(_clients[i].getFd());
+    }
+	if (_socket != -1){
+        log(RED, "Server <" + my_itos(_socket) + "> Disconnected");
+        close(_socket);
+    }
+}
 // server methods
 void                        Server::init(int port, std::string pass)
 {
     this->_pass = pass;
     this->_port = port;
 
-    log("\e[1;32m" ,"Server started, waiting for the connections...");
+    log(GREEN ,"Server started, waiting for the connections...");
     while (Server::_signal_f == false)
     {
         if ((poll(&_pfds[0], _pfds.size(), -1) == -1) && Server::_signal_f == false)
@@ -132,8 +152,11 @@ void                        Server::acceptClient()
     _pnclient.fd = incofd;
     _pnclient.events = POLLIN;
     _pnclient.revents = 0;
-    //TODO: client fd setter, client ipaddress setter, push it into clients vector
-    //TODO: log message that the filent is connected.
+    newclient.setFd(incofd);
+    newclient.setIpAdd(inet_ntoa((_cadd.sin_addr)));
+    _clients.push_back(newclient);
+    _pfds.push_back(_pnclient);
+    log(GREEN, "Client <" + my_itos(incofd) + "> Connected");
 }
 void                        Server::socket_create()
 {
@@ -167,7 +190,7 @@ void                        Server::reciveNewData(int fd)
     ssize_t bytes = recv(fd, buff, sizeof(buff) - 1 , 0);
     if (bytes <= 0)
     {
-        log("\033[0;33m", "Client is disconnected!");
+        log(RED, "Client is disconnected!");
         removeChannels(fd);
         removeClient(fd);
         removeFds(fd);

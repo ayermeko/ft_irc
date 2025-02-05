@@ -22,6 +22,7 @@ class Server;
 #include <sstream>
 #include <iostream>
 #include <string>
+
 static inline void log(const std::string color, const std::string& message) {
     // Get the current time and format it
     time_t rawtime;
@@ -33,4 +34,10 @@ static inline void log(const std::string color, const std::string& message) {
     // Output the formatted log message with timestamp
     std::cout   << "\033[0;34m[" << buffer << "]\033[0m " 
                 << color << message << "\033[0m " <<std::endl;
+}
+
+static inline std::string my_itos(int num) {
+    std::stringstream ss;
+    ss << num;
+    return ss.str();
 }
