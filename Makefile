@@ -1,44 +1,37 @@
-# **************************************************************************** #
-#                                MAKEFILE                                     #
-# **************************************************************************** #
+NAME	= ircserv
 
-NAME        := irc_server
-CC          := c++
-CFLAGS      := -Wall -Wextra -Werror -std=c++98
-RM          := rm -rf
+SRCS	= main.cpp \
+		  $(wildcard srcs/*.cpp) \
+		  $(wildcard cmd/*.cpp)
 
-SRCDIR      := src
-OBJDIR      := obj
-INCDIR      := include
+OBJ_DIR	= obj
 
-SOURCES     := $(wildcard $(SRCDIR)/*.cpp)
-OBJECTS     := $(patsubst $(SRCDIR)/%.cpp, $(OBJDIR)/%.o, $(SOURCES))
+OBJS	= $(SRCS:%.cpp=$(OBJ_DIR)/%.o)
 
-# **************************************************************************** #
-#                                RULES                                        #
-# **************************************************************************** #
+CFLAGS	= -Wall -Wextra -Werror -std=c++98
+
+CC		= g++
+
+INCLUDE	= -Iincludes/
 
 all: $(NAME)
 
-$(NAME): $(OBJECTS)
-	@$(CC) $(CFLAGS) $(OBJECTS) -o $(NAME)
-	@echo "\033[32m[✔] Compilation successful!\033[0m"
+$(OBJ_DIR)/%.o: %.cpp
+	@mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) $(INCLUDE) -c $< -o $@
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.cpp | $(OBJDIR)
-	@$(CC) $(CFLAGS) -I$(INCDIR) -c $< -o $@
+$(NAME): $(OBJS)
+	@$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-$(OBJDIR):
-	@mkdir -p $(OBJDIR)
+$(OBJ_DIR):
+	@mkdir -p $(OBJ_DIR)
 
 clean:
-	@$(RM) $(OBJDIR)
-	@echo "\033[33m[✔] Object files removed!\033[0m"
+	@rm -rf $(OBJ_DIR)
 
 fclean: clean
-	@$(RM) $(NAME)
-	@echo "\033[31m[✔] Executable removed!\033[0m"
+	@rm -rf $(NAME)
 
 re: fclean all
 
 .PHONY: all clean fclean re
-

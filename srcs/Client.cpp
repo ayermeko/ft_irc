@@ -1,13 +1,13 @@
 #include "Client.hpp"
-#include "Colors.hpp"
 //Constructors
 Client::Client() : _nickname(""), _username(""), _fd(-1), _isOperator(false),
     _registered(false), _buffer(""), _idaddress(""), _logedin(false) {}
 Client::Client(std::string nickname, std::string username, int fd)
-    : _fd(fd), _nickname(nickname), _username(username) {}
+    : _nickname(nickname), _username(username), _fd(fd) {}
 Client::~Client(){}
 Client::Client(const Client &src){*this = src;}
-Client      &Client::operator=(const Client &src){(void)src;}
+Client      &Client::operator=(const Client &src)
+{(void)src; return *this;}
 // Gettors
 int         Client::getFd() const{return this->_fd;}
 bool        Client::getRegistered() const{return this->_registered;}

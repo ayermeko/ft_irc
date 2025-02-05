@@ -19,9 +19,8 @@
 #include "Client.hpp"
 #include "Channel.hpp"
 #include "messanges.hpp"
-#include "Colors.hpp"
 
-class Cilent;
+class Client;
 class Channel;
 
 class Server

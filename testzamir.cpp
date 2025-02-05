@@ -16,10 +16,6 @@
 #define CYAN    "\033[36m"
 #define WHITE   "\033[37m"
 
-#define BOLD    "\033[1m"
-#define UNDERLINE "\033[4m"
-
-
 
 static inline void log(const std::string& color, const std::string& message) 
 {

@@ -1,10 +1,13 @@
 #include "Server.hpp"
-#include "Colors.hpp"
 
 Server::Server(){this->_socket = -1;}
 Server::~Server(){}
 Server::Server(Server const &src) { *this = src; }
-Server                      &Server::operator=(Server const &src){(void)src;}
+Server                      &Server::operator=(Server const &src)
+{
+    (void)src;
+    return (*this);
+}
 
 // getters
 int                         Server::getFd() const{return _socket;}
@@ -59,8 +62,8 @@ void                        Server::removeChannel(std::string name)
 			{this->_channels.erase(this->_channels.begin() + i); return;}
 	}
 }
-void                        Server::removeFds(int fd){}
-void                        Server::removeChannels(int fd){}
+void                        Server::removeFds(int fd){(void)fd;}
+void                        Server::removeChannels(int fd){(void)fd;}
 // error msgs
 void                        Server::sendError(int code, std::string clientname, int fd, std::string msg)
 {
@@ -139,11 +142,11 @@ void                        Server::socket_create()
     _add.sin_addr.s_addr = INADDR_ANY;
     _add.sin_port = htons(_port);
     _socket = socket(AF_INET, SOCK_STREAM, 0);
-    if (_socket = -1)
+    if (_socket == -1)
         throw(std::runtime_error("faild to create socket"));
-    if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &en, sizeof(en)) == -1)
+    if ((setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &en, sizeof(en)) == -1))
         throw(std::runtime_error("faild to set option (SO_REUSEADDR) on socket"));
-	if (fcntl(_socket, F_SETFL, O_NONBLOCK) == -1)
+    if ((fcntl(_socket, F_SETFL, O_NONBLOCK)) == -1)
 		throw(std::runtime_error("faild to set option (O_NONBLOCK) on socket"));
     if (bind(_socket, (struct sockaddr *)&_add, sizeof(_add)) == -1)
 		throw(std::runtime_error("faild to bind socket"));
@@ -160,7 +163,7 @@ void                        Server::reciveNewData(int fd)
     std::vector<std::string> cmd;
     char buff[1024];
     memset(buff, 0, sizeof(buff));
-    Client *client = getClient(fd);
+    //Client *client = getClient(fd);
     ssize_t bytes = recv(fd, buff, sizeof(buff) - 1 , 0);
     if (bytes <= 0)
     {
@@ -204,5 +207,6 @@ std::vector<std::string>    Server::split_cmd(std::string &cmd)
 }
 void                        Server::parse_exec_cmd(std::string &cmd, int fd)
 {
-    
+    (void)cmd;
+    (void)fd;
 }
