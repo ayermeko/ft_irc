@@ -1,5 +1,12 @@
 #include "Channel.hpp"
 
+Channel::Channel(Channel const &src) {*this = src;}
+Channel         &Channel::operator=(Channel const &src)
+{
+    (void)src;
+    return (*this);
+}
+
 Channel::Channel(/* args */)
 {
 }

@@ -5,9 +5,9 @@
 class Client
 {
     private:
+        int                     _fd;
         std::string             _nickname;
         std::string             _username;
-        int                     _fd;
         bool                    _isOperator;
         bool                    _registered;
         std::string             _buffer;
@@ -22,13 +22,14 @@ class Client
         Client(const Client &src);
         Client      &operator=(const Client &src);
         /* Gettors */
-        int         getFd() const;
+        int         getFd();
         bool        getRegistered() const;
         bool        getInviteChannel(std::string &chaname) const;
         std::string getNickname() const;
         bool        getLogedin() const;
         std::string getUserName() const;
-        std::string getBuffer() const;
+        std::string getIpAdd();
+        std::string getBuffer();
         std::string getHostname() const;
         /* Setters */
         void        setFd(int fd);
