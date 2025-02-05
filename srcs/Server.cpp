@@ -186,7 +186,7 @@ void                        Server::reciveNewData(int fd)
     std::vector<std::string> cmd;
     char buff[1024];
     memset(buff, 0, sizeof(buff));
-    //Client *client = getClient(fd);
+    Client *client = getClient(fd);
     ssize_t bytes = recv(fd, buff, sizeof(buff) - 1 , 0);
     if (bytes <= 0)
     {
@@ -198,7 +198,14 @@ void                        Server::reciveNewData(int fd)
     }
     else
     {
-        //TODO: FINSIH the CLIENT
+        client->setBuffer(buff);
+        if (client->getBuffer().find_first_of("\r\n") == std::string::npos)
+            return ;
+        cmd = split_recivedBuffer(client->getBuffer());
+        for(size_t i = 0; i < cmd.size(); i++)
+			this->parse_exec_cmd(cmd[i], fd);
+        if(getClient(fd))
+			getClient(fd)->clear_buffer();
     }
 }
 //Parsing methods
