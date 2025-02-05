@@ -3,6 +3,7 @@
 #include "Channel.hpp"
 #include "Client.hpp"
 #include "Server.hpp"
+#include "Colors.hpp"
 
 class Channel;
 class Client;

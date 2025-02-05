@@ -1,4 +1,5 @@
 #include "Server.hpp"
+#include "Colors.hpp"
 
 Server::Server(){this->_socket = -1;}
 Server::~Server(){}

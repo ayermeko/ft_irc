@@ -1,4 +1,5 @@
 #include "Client.hpp"
+#include "Colors.hpp"
 //Constructors
 Client::Client() : _nickname(""), _username(""), _fd(-1), _isOperator(false),
     _registered(false), _buffer(""), _idaddress(""), _logedin(false) {}

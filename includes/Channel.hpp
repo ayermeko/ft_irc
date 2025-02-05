@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Colors.hpp"
 #include <string>
 
 class Channel
