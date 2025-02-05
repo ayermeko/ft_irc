@@ -1,59 +1,70 @@
 #include "Client.hpp"
-//Constructors
-Client::Client() 
+
+Client::Client()
 {
-    this->_nickname = "";
-	this->_username = "";
-	this->_fd = -1;
-	this->_isOperator= false;
-	this->_registered = false;
-	this->_buffer = "";
-	this->_idaddress = "";
-	this->_logedin = false;
+	this->nickname = "";
+	this->username = "";
+	this->fd = -1;
+	this->isOperator= false;
+	this->registered = false;
+	this->buffer = "";
+	this->ipadd = "";
+	this->logedin = false;
 }
-Client::Client(std::string nickname, std::string username, int fd)
-    : _fd(fd), _nickname(nickname), _username(username) {}
+Client::Client(std::string nickname, std::string username, int fd) :fd(fd), nickname(nickname), username(username){}
 Client::~Client(){}
-Client::Client(const Client &src){*this = src;}
-Client      &Client::operator=(const Client &src)
-{(void)src; return *this;}
-// Gettors
-int         Client::getFd(){return this->_fd;}
-bool        Client::getRegistered() const{return this->_registered;}
-bool        Client::getInviteChannel(std::string &chaname) const
-{
-    for (size_t i = 0; i < this->ChannelsInvite.size(); i++)
-    {
-        if (this->ChannelsInvite[i] == chaname)
-            return (true);        
-    }
-    return (false);
+Client::Client(Client const &src){*this = src;}
+Client &Client::operator=(Client const &src){
+	if (this != &src){
+		this->nickname = src.nickname;
+		this->username = src.username;
+		this->fd = src.fd;
+		this->ChannelsInvite = src.ChannelsInvite;
+		this->buffer = src.buffer;
+		this->registered = src.registered;
+		this->ipadd = src.ipadd;
+		this->logedin = src.logedin;
+	}
+	return *this;
 }
-std::string Client::getNickname() const{return this->_nickname;}
-bool        Client::getLogedin() const{return this->_logedin;}
-std::string Client::getUserName() const{return this->_username;}
-std::string Client::getIpAdd() {return _idaddress;}
-std::string Client::getBuffer() { return this->_buffer; }
-std::string Client::getHostname() const
-{
-    std::string hostname = this->getNickname() + "!" + this->getUserName();
-    return hostname;
-}
-// Settors
-void        Client::setFd(int fd){this->_fd = fd;}
-void        Client::setNickname(std::string& nickname){this->_nickname = nickname;}
-void        Client::setLogedin(bool value){this->_logedin = value;}
-void        Client::setUsername(std::string& username){this->_username = username;}
-void        Client::setBuffer(std::string recived){_buffer += recived;}
-void        Client::setRegistered(bool value){this->_registered = value;}
-void        Client::setIpAdd(std::string ipadd){this->_idaddress = ipadd;}
-// Methods
-void        Client::clear_buffer(){_buffer.clear();}
-void        Client::addchannelInvite(std::string &channelname){ChannelsInvite.push_back(channelname);}
-void        Client::rmchannelInvite(std::string &channelname)
-{
+//---------------//Getters
+int Client::GetFd(){return this->fd;}
+bool Client::getRegistered(){return registered;}
+bool Client::GetInviteChannel(std::string &ChName){
 	for (size_t i = 0; i < this->ChannelsInvite.size(); i++){
-		if (this->ChannelsInvite[i] == channelname)
+		if (this->ChannelsInvite[i] == ChName)
+			return true;
+	}
+	return false;
+}
+std::string Client::GetNickName(){return this->nickname;}
+bool Client::GetLogedIn(){return this->logedin;}
+std::string Client::GetUserName(){return this->username;}
+std::string Client::getBuffer(){return buffer;}
+std::string Client::getIpAdd(){return ipadd;}
+std::string Client::getHostname(){
+	std::string hostname = this->GetNickName() + "!" + this->GetUserName();
+	return hostname;
+}
+//---------------//Getters
+//---------------//Setters
+void Client::SetFd(int fd){this->fd = fd;}
+void Client::SetNickname(std::string& nickName){this->nickname = nickName;}
+void Client::setLogedin(bool value){this->logedin = value;}
+void Client::SetUsername(std::string& username){this->username = username;}
+void Client::setBuffer(std::string recived){buffer += recived;}
+void Client::setRegistered(bool value){registered = value;}
+void Client::setIpAdd(std::string ipadd){this->ipadd = ipadd;}
+//---------------//Setters
+//---------------//Methods
+void Client::clearBuffer(){buffer.clear();}
+void Client::AddChannelInvite(std::string &chname){
+	ChannelsInvite.push_back(chname);
+}
+void Client::RmChannelInvite(std::string &chname){
+	for (size_t i = 0; i < this->ChannelsInvite.size(); i++){
+		if (this->ChannelsInvite[i] == chname)
 			{this->ChannelsInvite.erase(this->ChannelsInvite.begin() + i); return;}
 	}
 }
+//---------------//Methods
