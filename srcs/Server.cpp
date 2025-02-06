@@ -20,24 +20,24 @@ Server &Server::operator=(Server const &src){
 	return *this;
 }
 //---------------//Getters
-int Server::GetPort(){return this->port;}
-int Server::GetFd(){return this->server_fdsocket;}
-Client *Server::GetClient(int fd){
+int Server::getPort(){return this->port;}
+int Server::getFd(){return this->server_fdsocket;}
+Client *Server::getClient(int fd){
 	for (size_t i = 0; i < this->clients.size(); i++){
-		if (this->clients[i].GetFd() == fd)
+		if (this->clients[i].getFd() == fd)
 			return &this->clients[i];
 	}
 	return NULL;
 }
-Client *Server::GetClientNick(std::string nickname){
+Client *Server::getClientNick(std::string nickname){
 	for (size_t i = 0; i < this->clients.size(); i++){
-		if (this->clients[i].GetNickName() == nickname)
+		if (this->clients[i].getNickName() == nickname)
 			return &this->clients[i];
 	}
 	return NULL;
 }
 
-Channel *Server::GetChannel(std::string name)
+Channel *Server::getChannel(std::string name)
 {
 	for (size_t i = 0; i < this->channels.size(); i++){
 		if (this->channels[i].GetName() == name)
@@ -47,34 +47,34 @@ Channel *Server::GetChannel(std::string name)
 }
 //---------------//Getters
 //---------------//Setters
-void Server::SetFd(int fd){this->server_fdsocket = fd;}
-void Server::SetPort(int port){this->port = port;}
-void Server::SetPassword(std::string password){this->password = password;}
-std::string Server::GetPassword(){return this->password;}
-void Server::AddClient(Client newClient){this->clients.push_back(newClient);}
-void Server::AddChannel(Channel newChannel){this->channels.push_back(newChannel);}
-void Server::AddFds(pollfd newFd){this->fds.push_back(newFd);}
+void Server::setFd(int fd){this->server_fdsocket = fd;}
+void Server::setPort(int port){this->port = port;}
+void Server::setPassword(std::string password){this->password = password;}
+std::string Server::getPassword(){return this->password;}
+void Server::addClient(Client newClient){this->clients.push_back(newClient);}
+void Server::addChannel(Channel newChannel){this->channels.push_back(newChannel);}
+void Server::addFds(pollfd newFd){this->fds.push_back(newFd);}
 //---------------//Setters
 //---------------//Remove Methods
-void Server::RemoveClient(int fd){
+void Server::removeClient(int fd){
 	for (size_t i = 0; i < this->clients.size(); i++){
-		if (this->clients[i].GetFd() == fd)
+		if (this->clients[i].getFd() == fd)
 			{this->clients.erase(this->clients.begin() + i); return;}
 	}
 }
-void Server::RemoveChannel(std::string name){
+void Server::removeChannel(std::string name){
 	for (size_t i = 0; i < this->channels.size(); i++){
 		if (this->channels[i].GetName() == name)
 			{this->channels.erase(this->channels.begin() + i); return;}
 	}
 }
-void Server::RemoveFds(int fd){
+void Server::removeFds(int fd){
 	for (size_t i = 0; i < this->fds.size(); i++){
 		if (this->fds[i].fd == fd)
 			{this->fds.erase(this->fds.begin() + i); return;}
 	}
 }
-void	Server::RmChannels(int fd){
+void	Server::rmChannels(int fd){
 	for (size_t i = 0; i < this->channels.size(); i++){
 		int flag = 0;
 		if (channels[i].get_client(fd))
@@ -84,7 +84,7 @@ void	Server::RmChannels(int fd){
 		if (channels[i].GetClientsNumber() == 0)
 			{channels.erase(channels.begin() + i); i--; continue;}
 		if (flag){
-			std::string rpl = ":" + GetClient(fd)->GetNickName() + "!~" + GetClient(fd)->GetUserName() + "@localhost QUIT Quit\r\n";
+			std::string rpl = ":" + getClient(fd)->getNickName() + "!~" + getClient(fd)->getUserName() + "@localhost QUIT Quit\r\n";
 			channels[i].sendTo_all(rpl);
 		}
 	}
@@ -127,7 +127,7 @@ void Server::SignalHandler(int signum)
 void	Server::close_fds(){
 	for(size_t i = 0; i < clients.size(); i++){
 		//TODO: adding log
-		close(clients[i].GetFd());
+		close(clients[i].getFd());
 	}
 	if (server_fdsocket != -1){	
 		//TODO: adding log
@@ -210,14 +210,14 @@ void Server::reciveNewData(int fd)
 	std::vector<std::string> cmd;
 	char buff[1024];
 	memset(buff, 0, sizeof(buff));
-	Client *cli = GetClient(fd);
+	Client *cli = getClient(fd);
 	ssize_t bytes = recv(fd, buff, sizeof(buff) - 1 , 0);
 	if(bytes <= 0)
 	{
 		//TODO: adding logs
-		RmChannels(fd);
-		RemoveClient(fd);
-		RemoveFds(fd);
+		rmChannels(fd);
+		removeClient(fd);
+		removeFds(fd);
 		close(fd);
 	}
 	else
@@ -228,8 +228,8 @@ void Server::reciveNewData(int fd)
 		cmd = split_recivedBuffer(cli->getBuffer());
 		for(size_t i = 0; i < cmd.size(); i++)
 			this->parse_exec_cmd(cmd[i], fd);
-		if(GetClient(fd))
-			GetClient(fd)->clearBuffer();
+		if(getClient(fd))
+			getClient(fd)->clearBuffer();
 	}
 }
 //---------------//Server Methods
@@ -264,7 +264,7 @@ std::vector<std::string> Server::split_cmd(std::string& cmd)
 
 bool Server::notregistered(int fd)
 {
-	if (!GetClient(fd) || GetClient(fd)->GetNickName().empty() || GetClient(fd)->GetUserName().empty() || GetClient(fd)->GetNickName() == "*"  || !GetClient(fd)->GetLogedIn())
+	if (!getClient(fd) || getClient(fd)->getNickName().empty() || getClient(fd)->getUserName().empty() || getClient(fd)->getNickName() == "*"  || !getClient(fd)->getLogedIn())
 		return false;
 	return true;
 }

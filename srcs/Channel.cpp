@@ -60,11 +60,11 @@ bool Channel::Gettopic_restriction() const{return this->topic_restriction;}
 bool Channel::getModeAtindex(size_t index){return modes[index].second;}
 bool Channel::clientInChannel(std::string &nick){
 	for(size_t i = 0; i < clients.size(); i++){
-		if(clients[i].GetNickName() == nick)
+		if(clients[i].getNickName() == nick)
 			return true;
 	}
 	for(size_t i = 0; i < admins.size(); i++){
-		if(admins[i].GetNickName() == nick)
+		if(admins[i].getNickName() == nick)
 			return true;
 	}
 	return false;
@@ -87,14 +87,14 @@ std::string Channel::getModes(){
 std::string Channel::clientChannel_list(){
 	std::string list;
 	for(size_t i = 0; i < admins.size(); i++){
-		list += "@" + admins[i].GetNickName();
+		list += "@" + admins[i].getNickName();
 		if((i + 1) < admins.size())
 			list += " ";
 	}
 	if(clients.size())
 		list += " ";
 	for(size_t i = 0; i < clients.size(); i++){
-		list += clients[i].GetNickName();
+		list += clients[i].getNickName();
 		if((i + 1) < clients.size())
 			list += " ";
 	}
@@ -102,14 +102,14 @@ std::string Channel::clientChannel_list(){
 }
 Client *Channel::get_client(int fd){
 	for (std::vector<Client>::iterator it = clients.begin(); it != clients.end(); ++it){
-		if (it->GetFd() == fd)
+		if (it->getFd() == fd)
 			return &(*it);
 	}
 	return NULL;
 }
 Client *Channel::get_admin(int fd){
 	for (std::vector<Client>::iterator it = admins.begin(); it != admins.end(); ++it){
-		if (it->GetFd() == fd)
+		if (it->getFd() == fd)
 			return &(*it);
 	}
 	return NULL;
@@ -117,11 +117,11 @@ Client *Channel::get_admin(int fd){
 Client* Channel::GetClientInChannel(std::string name)
 {
 	for (std::vector<Client>::iterator it = clients.begin(); it != clients.end(); ++it){
-		if (it->GetNickName() == name)
+		if (it->getNickName() == name)
 			return &(*it);
 	}
 	for (std::vector<Client>::iterator it = admins.begin(); it != admins.end(); ++it){
-		if (it->GetNickName() == name)
+		if (it->getNickName() == name)
 			return &(*it);
 	}
 	return NULL;
@@ -132,20 +132,20 @@ void Channel::add_client(Client newClient){clients.push_back(newClient);}
 void Channel::add_admin(Client newClient){admins.push_back(newClient);}
 void Channel::remove_client(int fd){
 	for (std::vector<Client>::iterator it = clients.begin(); it != clients.end(); ++it){
-		if (it->GetFd() == fd)
+		if (it->getFd() == fd)
 			{clients.erase(it); break;}
 	}
 }
 void Channel::remove_admin(int fd){
 	for (std::vector<Client>::iterator it = admins.begin(); it != admins.end(); ++it){
-		if (it->GetFd() == fd)
+		if (it->getFd() == fd)
 			{admins.erase(it); break;}
 	}
 }
 bool Channel::change_clientToAdmin(std::string& nick){
 	size_t i = 0;
 	for(; i < clients.size(); i++){
-		if(clients[i].GetNickName() == nick)
+		if(clients[i].getNickName() == nick)
 			break;
 	}
 	if(i < clients.size()){
@@ -159,7 +159,7 @@ bool Channel::change_clientToAdmin(std::string& nick){
 bool Channel::change_adminToClient(std::string& nick){
 	size_t i = 0;
 	for(; i < admins.size(); i++){
-		if(admins[i].GetNickName() == nick)
+		if(admins[i].getNickName() == nick)
 			break;
 	}
 	if(i < admins.size()){
@@ -175,22 +175,22 @@ bool Channel::change_adminToClient(std::string& nick){
 void Channel::sendTo_all(std::string rpl1)
 {
 	for(size_t i = 0; i < admins.size(); i++)
-		if(send(admins[i].GetFd(), rpl1.c_str(), rpl1.size(),0) == -1)
+		if(send(admins[i].getFd(), rpl1.c_str(), rpl1.size(),0) == -1)
 			std::cerr << "send() faild" << std::endl;
 	for(size_t i = 0; i < clients.size(); i++)
-		if(send(clients[i].GetFd(), rpl1.c_str(), rpl1.size(),0) == -1)
+		if(send(clients[i].getFd(), rpl1.c_str(), rpl1.size(),0) == -1)
 			std::cerr << "send() faild" << std::endl;
 }
 void Channel::sendTo_all(std::string rpl1, int fd)
 {
 	for(size_t i = 0; i < admins.size(); i++){
-		if(admins[i].GetFd() != fd)
-			if(send(admins[i].GetFd(), rpl1.c_str(), rpl1.size(),0) == -1)
+		if(admins[i].getFd() != fd)
+			if(send(admins[i].getFd(), rpl1.c_str(), rpl1.size(),0) == -1)
 				std::cerr << "send() faild" << std::endl;
 	}
 	for(size_t i = 0; i < clients.size(); i++){
-		if(clients[i].GetFd() != fd)
-			if(send(clients[i].GetFd(), rpl1.c_str(), rpl1.size(),0) == -1)
+		if(clients[i].getFd() != fd)
+			if(send(clients[i].getFd(), rpl1.c_str(), rpl1.size(),0) == -1)
 				std::cerr << "send() faild" << std::endl;
 	}
 }
