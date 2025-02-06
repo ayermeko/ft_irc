@@ -29,16 +29,16 @@ class Channel;
 class Server
 {
 private:
-	int 						port;
-	int 						server_fdsocket;
-	static bool 				Signal;
-	std::string 				password;
-	std::vector<Client> 		clients;
-	std::vector<Channel> 		channels;
-	std::vector<struct pollfd> 	fds;
-	struct sockaddr_in 			add;
-	struct sockaddr_in 			cliadd;
-	struct pollfd 				new_cli;
+	int 						_port;
+	int 						_server_fdsocket;
+	static bool 				_Signal;
+	std::string 				_password;
+	std::vector<Client> 		_clients;
+	std::vector<Channel> 		_channels;
+	std::vector<struct pollfd> 	_fds;
+	struct sockaddr_in 			_add;
+	struct sockaddr_in 			_cliadd;
+	struct pollfd 				_new_cli;
 public:
 	Server();
 	~Server();
