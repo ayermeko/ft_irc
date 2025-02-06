@@ -33,10 +33,10 @@ public:
 	std::string 				getBuffer();
 	std::string 				getHostname();
 	//---------------//Setters
-	void 						SetFd(int fd);
-	void 						SetNickname(std::string& nickName);
+	void 						setFd(int fd);
+	void 						setNickname(std::string& nickName);
 	void 						setLogedin(bool value);
-	void 						SetUsername(std::string& username);
+	void 						setUsername(std::string& username);
 	void 						setBuffer(std::string recived);
 	void 						setRegistered(bool value);
 	void 						setIpAdd(std::string ipadd);

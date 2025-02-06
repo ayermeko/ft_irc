@@ -33,14 +33,14 @@ Channel &Channel::operator=(Channel const &src){
 	return *this;
 }
 //---------------//Setters
-void Channel::SetInvitOnly(int invit_only){this->invit_only = invit_only;}
-void Channel::SetTopic(int topic){this->topic = topic;}
-void Channel::SetTime(std::string time){this->time_creation = time;}
-void Channel::SetKey(int key){this->key = key;}
-void Channel::SetLimit(int limit){this->limit = limit;}
-void Channel::SetTopicName(std::string topic_name){this->topic_name = topic_name;}
-void Channel::SetPassword(std::string password){this->password = password;}
-void Channel::SetName(std::string name){this->name = name;}
+void Channel::setInvitOnly(int invit_only){this->invit_only = invit_only;}
+void Channel::setTopic(int topic){this->topic = topic;}
+void Channel::setTime(std::string time){this->time_creation = time;}
+void Channel::setKey(int key){this->key = key;}
+void Channel::setLimit(int limit){this->limit = limit;}
+void Channel::setTopicName(std::string topic_name){this->topic_name = topic_name;}
+void Channel::setPassword(std::string password){this->password = password;}
+void Channel::setName(std::string name){this->name = name;}
 void Channel::set_topicRestriction(bool value){this->topic_restriction = value;}
 void Channel::setModeAtindex(size_t index, bool mode){modes[index].second = mode;}
 void Channel::set_createiontime(){
@@ -51,12 +51,12 @@ void Channel::set_createiontime(){
 }
 //---------------//Setters
 //---------------//Getters
-int Channel::GetInvitOnly(){return this->invit_only;}
-int Channel::GetTopic(){return this->topic;}
-int Channel::GetKey(){return this->key;}
-int Channel::GetLimit(){return this->limit;}
-int Channel::GetClientsNumber(){return this->clients.size() + this->admins.size();}
-bool Channel::Gettopic_restriction() const{return this->topic_restriction;}
+int Channel::getInvitOnly(){return this->invit_only;}
+int Channel::getTopic(){return this->topic;}
+int Channel::getKey(){return this->key;}
+int Channel::getLimit(){return this->limit;}
+int Channel::getClientsNumber(){return this->clients.size() + this->admins.size();}
+bool Channel::gettopic_restriction() const{return this->topic_restriction;}
 bool Channel::getModeAtindex(size_t index){return modes[index].second;}
 bool Channel::clientInChannel(std::string &nick){
 	for(size_t i = 0; i < clients.size(); i++){
@@ -69,10 +69,10 @@ bool Channel::clientInChannel(std::string &nick){
 	}
 	return false;
 }
-std::string Channel::GetTopicName(){return this->topic_name;}
-std::string Channel::GetPassword(){return this->password;}
-std::string Channel::GetName(){return this->name;}
-std::string Channel::GetTime(){return this->time_creation;}
+std::string Channel::getTopicName(){return this->topic_name;}
+std::string Channel::getPassword(){return this->password;}
+std::string Channel::getName(){return this->name;}
+std::string Channel::getTime(){return this->time_creation;}
 std::string Channel::get_creationtime(){return created_at;}
 std::string Channel::getModes(){
 	std::string mode;

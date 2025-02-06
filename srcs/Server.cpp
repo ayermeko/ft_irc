@@ -40,7 +40,7 @@ Client *Server::getClientNick(std::string nickname){
 Channel *Server::getChannel(std::string name)
 {
 	for (size_t i = 0; i < this->channels.size(); i++){
-		if (this->channels[i].GetName() == name)
+		if (this->channels[i].getName() == name)
 			return &channels[i];
 	}
 	return NULL;
@@ -64,7 +64,7 @@ void Server::removeClient(int fd){
 }
 void Server::removeChannel(std::string name){
 	for (size_t i = 0; i < this->channels.size(); i++){
-		if (this->channels[i].GetName() == name)
+		if (this->channels[i].getName() == name)
 			{this->channels.erase(this->channels.begin() + i); return;}
 	}
 }
@@ -81,7 +81,7 @@ void	Server::rmChannels(int fd){
 			{channels[i].remove_client(fd); flag = 1;}
 		else if (channels[i].get_admin(fd))
 			{channels[i].remove_admin(fd); flag = 1;}
-		if (channels[i].GetClientsNumber() == 0)
+		if (channels[i].getClientsNumber() == 0)
 			{channels.erase(channels.begin() + i); i--; continue;}
 		if (flag){
 			std::string rpl = ":" + getClient(fd)->getNickName() + "!~" + getClient(fd)->getUserName() + "@localhost QUIT Quit\r\n";
@@ -198,7 +198,7 @@ void Server::accept_new_client()
 	new_cli.fd = incofd;
 	new_cli.events = POLLIN;
 	new_cli.revents = 0;
-	cli.SetFd(incofd);
+	cli.setFd(incofd);
 	cli.setIpAdd(inet_ntoa((cliadd.sin_addr)));
 	clients.push_back(cli);
 	fds.push_back(new_cli);
