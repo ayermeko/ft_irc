@@ -4,19 +4,7 @@ Server::Server(){this->_server_fdsocket = -1;}
 Server::~Server(){}
 Server::Server(Server const &src){*this = src;}
 Server &Server::operator=(Server const &src){
-	if (this != &src){
-		/*
-		struct sockaddr_in add;
-		struct sockaddr_in cliadd;
-		struct pollfd new_cli;
-		*/
-		this->_port = src._port;
-		this->_server_fdsocket = src._server_fdsocket;
-		this->_password = src._password;
-		this->_clients = src._clients;
-		this->_channels = src._channels;
-		this->_fds = src._fds;
-	}
+	(void)src;
 	return *this;
 }
 //---------------//Getters
@@ -126,11 +114,11 @@ void Server::SignalHandler(int signum)
 
 void	Server::close_fds(){
 	for(size_t i = 0; i < _clients.size(); i++){
-		//TODO: adding log
+		log(YELLOW, "Client <" + my_itos(_clients[i].getFd()) + "> is disconnected!");
 		close(_clients[i].getFd());
 	}
 	if (_server_fdsocket != -1){	
-		//TODO: adding log
+		log(YELLOW, "Server <" + my_itos(_server_fdsocket) + "> is disconnected!");
 		close(_server_fdsocket);
 	}
 }
@@ -142,8 +130,7 @@ void Server::init(int port, std::string pass)
 	this->_port = port;
 	this->set_sever_socket();
 
-	//TODO: adding log
-	std::cout << "Waiting to accept a connection...\n";
+	log(GREEN, "Server <" + my_itos(_server_fdsocket) + "> is created, waiting for connections...");
 	while (Server::_Signal == false)
 	{
 		if((poll(&_fds[0],_fds.size(),-1) == -1) && Server::_Signal == false)
@@ -202,7 +189,7 @@ void Server::accept_new_client()
 	cli.setIpAdd(inet_ntoa((_cliadd.sin_addr)));
 	_clients.push_back(cli);
 	_fds.push_back(_new_cli);
-	//TODO: adding log
+	log(GREEN, "Client <" + my_itos(cli.getFd()) + "> is connected to the server!");
 }
 
 void Server::reciveNewData(int fd)
@@ -223,7 +210,7 @@ void Server::reciveNewData(int fd)
 	else
 	{ 
 		cli->setBuffer(buff);
-		if(cli->getBuffer().find_first_of("\r\n") == std::string::npos)
+		if(cli->getBuffer().find_first_of(CRLF) == std::string::npos)
 			return;
 		cmd = split_recivedBuffer(cli->getBuffer());
 		for(size_t i = 0; i < cmd.size(); i++)
@@ -241,7 +228,7 @@ std::vector<std::string> Server::split_recivedBuffer(std::string str)
 	std::string line;
 	while(std::getline(stm, line))
 	{
-		size_t pos = line.find_first_of("\r\n");
+		size_t pos = line.find_first_of(CRLF);
 		if(pos != std::string::npos)
 			line = line.substr(0, pos);
 		vec.push_back(line);
