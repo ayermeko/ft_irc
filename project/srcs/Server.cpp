@@ -3,7 +3,22 @@
 Server::Server(){this->_server_fdsocket = -1;}
 Server::~Server(){}
 Server::Server(Server const &src){*this = src;}
-Server &Server::operator=(Server const &src){(void)src; return *this;}
+Server &Server::operator=(Server const &src){
+	if (this != &src){
+		/*
+		struct sockaddr_in add;
+		struct sockaddr_in cliadd;
+		struct pollfd new_cli;
+		*/
+		this->_port = src._port;
+		this->_server_fdsocket = src._server_fdsocket;
+		this->_password = src._password;
+		this->_clients = src._clients;
+		this->_channels = src._channels;
+		this->_fds = src._fds;
+	}
+	return *this;
+}
 //---------------//Getters
 int Server::getPort(){return this->_port;}
 int Server::getFd(){return this->_server_fdsocket;}
@@ -127,7 +142,8 @@ void Server::init(int port, std::string pass)
 	this->_port = port;
 	this->set_sever_socket();
 
-	log(GREEN, "Server <" + my_itos(_server_fdsocket) + "> is created, waiting for connections...");
+	//TODO: adding log
+	std::cout << "Waiting to accept a connection...\n";
 	while (Server::_Signal == false)
 	{
 		if((poll(&_fds[0],_fds.size(),-1) == -1) && Server::_Signal == false)
@@ -186,7 +202,7 @@ void Server::accept_new_client()
 	cli.setIpAdd(inet_ntoa((_cliadd.sin_addr)));
 	_clients.push_back(cli);
 	_fds.push_back(_new_cli);
-	log(GREEN, "Client <" + my_itos(cli.getFd()) + "> is connected to the server!");
+	//TODO: adding log
 }
 
 void Server::reciveNewData(int fd)

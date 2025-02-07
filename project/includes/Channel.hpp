@@ -9,19 +9,19 @@ class Channel
 {
 private:
 
-	int 								_invit_only;
-	int 								_topic;
-	int 								_key;
-	int 								_limit;
-	bool 								_topic_restriction;
-	std::string 						_name;
-	std::string 						_time_creation;
-	std::string 						_password;
-	std::string 						_created_at;
-	std::string 						_topic_name;
-	std::vector<Client> 				_clients;
-	std::vector<Client> 				_admins;
-	std::vector<std::pair<char, bool> > _modes;
+	int 								invit_only;
+	int 								topic;
+	int 								key;
+	int 								limit;
+	bool 								topic_restriction;
+	std::string 						name;
+	std::string 						time_creation;
+	std::string 						password;
+	std::string 						created_at;
+	std::string 						topic_name;
+	std::vector<Client> 				clients;
+	std::vector<Client> 				admins;
+	std::vector<std::pair<char, bool> > modes;
 public:
 	Channel();
 	~Channel();

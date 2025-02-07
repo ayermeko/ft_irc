@@ -7,14 +7,15 @@ static bool isPortValid(std::string port){
 
 int main(int ac, char **av)
 {
-	if (ac != 3)
-		{std::cout << RED << "Usage: " << av[0] << " <port number> <password>" << RESET << std::endl; return 1;}
 	Server ser;
+	if (ac != 3)
+		{std::cout << "Usage: " << av[0] << " <port number> <password>" << std::endl; return 1;}
+	std::cout << "---- SERVER ----" << std::endl;
 	try
 	{
 		signal(SIGINT, Server::SignalHandler);
 		signal(SIGQUIT, Server::SignalHandler);
-		signal(SIGPIPE, SIG_IGN);
+		signal(SIGPIPE, SIG_IGN); // or MSG_NOSIGNAL flag in send() to ignore SIGPIPE on linux systems
 		if(!isPortValid(av[1]) || !*av[2] || std::strlen(av[2]) > 20)
 			{std::cout << "invalid Port number / Password!" << std::endl; return 1;}
 		ser.init(std::atoi(av[1]), av[2]);
