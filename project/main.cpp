@@ -19,7 +19,10 @@ int main(int ac, char **av)
 		signal(SIGQUIT, Server::SignalHandler);
 		signal(SIGPIPE, SIG_IGN); // or MSG_NOSIGNAL flag in send() to ignore SIGPIPE on linux systems
 		if(!isPortValid(av[1]) || !*av[2] || std::strlen(av[2]) > 20)
-			{std::cout << "invalid Port number / Password!" << std::endl; return 1;}
+		{
+			std::cout << "invalid Port number / Password!" << std::endl; 
+			return 2;
+		}
 		ser.init(std::atoi(av[1]), av[2]);
 	}
 	catch(const std::exception& e)
