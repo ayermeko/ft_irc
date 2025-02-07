@@ -201,7 +201,7 @@ void Server::reciveNewData(int fd)
 	ssize_t bytes = recv(fd, buff, sizeof(buff) - 1 , 0);
 	if(bytes <= 0)
 	{
-		//TODO: adding logs
+		log(YELLOW, "Client <" + my_itos(fd) + "> Disconnected!");
 		rmChannels(fd);
 		removeClient(fd);
 		removeFds(fd);

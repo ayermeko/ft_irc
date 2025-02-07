@@ -7,10 +7,12 @@ static bool isPortValid(std::string port){
 
 int main(int ac, char **av)
 {
-	Server ser;
 	if (ac != 3)
-		{std::cout << "Usage: " << av[0] << " <port number> <password>" << std::endl; return 1;}
-	std::cout << "---- SERVER ----" << std::endl;
+	{
+		std::cout << RED << "Usage: " << av[0] << " <port number> <password>" << RESET << std::endl; 
+		return 1;
+	}
+	Server ser;
 	try
 	{
 		signal(SIGINT, Server::SignalHandler);

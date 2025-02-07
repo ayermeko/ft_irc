@@ -25,7 +25,7 @@ static inline void log(const std::string& color, const std::string& message)
     std::cout << "\033[0;34m[" 
               << std::put_time(std::localtime(&now_c), "%d-%m-%Y %H:%M:%S") 
               << "]\033[0m " 
-              << color << message << "\033[0m" << std::endl;
+              << color << message << RESET << std::endl;
 }
 
 int main() {
