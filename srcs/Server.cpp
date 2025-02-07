@@ -127,8 +127,7 @@ void Server::init(int port, std::string pass)
 	this->_port = port;
 	this->set_sever_socket();
 
-	//TODO: adding log
-	std::cout << "Waiting to accept a connection...\n";
+	log(GREEN, "Server <" + my_itos(_server_fdsocket) + "> is created, waiting for connections...");
 	while (Server::_Signal == false)
 	{
 		if((poll(&_fds[0],_fds.size(),-1) == -1) && Server::_Signal == false)
@@ -187,7 +186,7 @@ void Server::accept_new_client()
 	cli.setIpAdd(inet_ntoa((_cliadd.sin_addr)));
 	_clients.push_back(cli);
 	_fds.push_back(_new_cli);
-	//TODO: adding log
+	log(GREEN, "Client <" + my_itos(cli.getFd()) + "> is connected to the server!");
 }
 
 void Server::reciveNewData(int fd)
