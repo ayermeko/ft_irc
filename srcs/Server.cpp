@@ -276,3 +276,4 @@ void Server::parse_exec_cmd(std::string &cmd, int fd)
 		QUIT(cmd,fd);
 }
 //---------------//Parsing Methods
+//RFC 1459 IRC protocol format
