@@ -264,7 +264,15 @@ void Server::parse_exec_cmd(std::string &cmd, int fd)
 	size_t found = cmd.find_first_not_of(" \t\v");
 	if(found != std::string::npos)
 		cmd = cmd.substr(found);
-	if (splited_cmd.size() && (splited_cmd[0] == "NICK" || splited_cmd[0] == "nick"))
+	if(splited_cmd.size() && (splited_cmd[0] == "BONG" || splited_cmd[0] == "bong"))
+		return ;
+    if(splited_cmd.size() && (splited_cmd[0] == "PASS" || splited_cmd[0] == "pass"))
+        client_authen(fd, cmd);
+	else if (splited_cmd.size() && (splited_cmd[0] == "NICK" || splited_cmd[0] == "nick"))
 		set_nickname(cmd,fd);
+	else if(splited_cmd.size() && (splited_cmd[0] == "USER" || splited_cmd[0] == "user"))
+		set_username(cmd, fd);
+	else if (splited_cmd.size() && (splited_cmd[0] == "QUIT" || splited_cmd[0] == "quit"))
+		QUIT(cmd,fd);
 }
 //---------------//Parsing Methods
