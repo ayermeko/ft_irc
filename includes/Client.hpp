@@ -7,14 +7,14 @@
 class Client
 {
 private:
-	int 						fd;
-	bool 						isOperator;
-	bool 						registered;
-	std::string 				nickname;
-	bool 						logedin;
-	std::string 				username;	
-	std::string 				buffer;
-	std::string 				ipadd;
+	int 						_fd;
+	bool 						_isOperator;
+	bool 						_registered;
+	std::string 				_nickname;
+	bool 						_logedin;
+	std::string 				_username;	
+	std::string 				_buffer;
+	std::string 				_ipadd;
 	std::vector<std::string> 	ChannelsInvite;
 public:
 	Client();
