@@ -258,7 +258,13 @@ bool Server::notregistered(int fd)
 
 void Server::parse_exec_cmd(std::string &cmd, int fd)
 {
-	(void)cmd;
-	(void)fd;
+	if(cmd.empty())
+		return ;
+	std::vector<std::string> splited_cmd = split_cmd(cmd);
+	size_t found = cmd.find_first_not_of(" \t\v");
+	if(found != std::string::npos)
+		cmd = cmd.substr(found);
+	if (splited_cmd.size() && (splited_cmd[0] == "NICK" || splited_cmd[0] == "nick"))
+		set_nickname(cmd,fd);
 }
 //---------------//Parsing Methods
