@@ -43,9 +43,9 @@ bool Server::nickNameInUse(std::string& nickname)
 	for (size_t i = 0; i < this->_clients.size(); i++)
 	{
 		if (this->_clients[i].getNickName() == nickname)
-			return true;
+			return (true);
 	}
-	return false;
+	return (false);
 }
 
 
