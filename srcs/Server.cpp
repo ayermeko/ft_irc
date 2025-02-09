@@ -282,8 +282,8 @@ void Server::parse_exec_cmd(std::string &cmd, int fd)
 			JOIN(cmd, fd);
 		else if (splited_cmd.size() && (splited_cmd[0] == "PRIVMSG" || splited_cmd[0] == "privmsg"))
 			PRIVMSG(cmd, fd);
-		else if (splited_cmd.size())
-			_sendResponse(ERR_CMDNOTFOUND(getClient(fd)->getNickName(),splited_cmd[0]), fd);
+		// else if (splited_cmd.size())
+		// 	_sendResponse(ERR_CMDNOTFOUND(getClient(fd)->getNickName(),splited_cmd[0]), fd);
 	}
 }
 //---------------//Parsing Methods
