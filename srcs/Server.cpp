@@ -274,6 +274,13 @@ void Server::parse_exec_cmd(std::string &cmd, int fd)
 		set_username(cmd, fd);
 	else if (splited_cmd.size() && (splited_cmd[0] == "QUIT" || splited_cmd[0] == "quit"))
 		QUIT(cmd,fd);
+	else if(notregistered(fd))
+	{
+		if (splited_cmd.size() && (splited_cmd[0] == "KICK" || splited_cmd[0] == "kick"))
+			KICK(cmd, fd);
+		else if (splited_cmd.size() && (splited_cmd[0] == "JOIN" || splited_cmd[0] == "join"))
+			JOIN(cmd, fd);
+	}
 }
 //---------------//Parsing Methods
 //RFC 1459 IRC protocol format
