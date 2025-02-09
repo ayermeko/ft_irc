@@ -280,7 +280,9 @@ void Server::parse_exec_cmd(std::string &cmd, int fd)
 			KICK(cmd, fd);
 		else if (splited_cmd.size() && (splited_cmd[0] == "JOIN" || splited_cmd[0] == "join"))
 			JOIN(cmd, fd);
+		else if (splited_cmd.size() && (splited_cmd[0] == "PRIVMSG" || splited_cmd[0] == "privmsg"))
+			PRIVMSG(cmd, fd);
 	}
 }
 //---------------//Parsing Methods
-//RFC 1459 IRC protocol format
+//RFC 1459 IRC protocol format.
