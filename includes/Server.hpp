@@ -143,7 +143,7 @@ public:
 	//---------------------------//QUITE CMD
 	void						QUIT(std::string cmd, int fd);
 	//---------------------------//MODE CMD
-	void 						mode_command(std::string& cmd, int fd);
+	void 						MODE(std::string& cmd, int fd);
 	std::string 				invite_only(Channel *channel, char opera, std::string chain);
 	std::string 				topic_restriction(Channel *channel ,char opera, std::string chain);
 	std::string 				password_mode(std::vector<std::string> splited, Channel *channel, size_t &pos, char opera, int fd, std::string chain, std::string& arguments);

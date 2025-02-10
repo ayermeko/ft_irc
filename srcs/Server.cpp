@@ -286,6 +286,8 @@ void Server::parse_exec_cmd(std::string &cmd, int fd)
 			PART(cmd, fd);
 		else if (splited_cmd.size() && (splited_cmd[0] == "TOPIC" || splited_cmd[0] == "topic"))
 			TOPIC(cmd, fd);
+		else if (splited_cmd.size() && (splited_cmd[0] == "MODE" || splited_cmd[0] == "mode"))
+			MODE(cmd, fd);
 		else if (splited_cmd.size())
 			_sendResponse(ERR_CMDNOTFOUND(getClient(fd)->getNickName(),splited_cmd[0]), fd);
 	}
