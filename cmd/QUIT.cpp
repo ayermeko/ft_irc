@@ -64,7 +64,7 @@ void Server::QUIT(std::string cmd, int fd)
 			}
 		}
 	}
-    log(YELLOW, "Client <" + my_itos(_clients[i].getFd()) + "> is disconnected!");
+    log(YELLOW, "Client is disconnected with QUIT!");
 	rmChannels(fd);
 	removeClient(fd);
 	removeFds(fd);
