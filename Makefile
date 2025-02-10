@@ -1,8 +1,10 @@
 NAME	= ircserv
 
-SRCS	= main.cpp \
-		  $(wildcard srcs/*.cpp) \
-		  $(wildcard cmd/*.cpp)
+SRCS =   main.cpp\
+	    $(addprefix cmd/, INVITE.cpp JOIN.cpp KICK.cpp MODE.cpp NICK.cpp PART.cpp PRIVMSG.cpp QUIT.cpp TOPIC.cpp) \
+        $(addprefix srcs/, Channel.cpp Client.cpp Server.cpp)
+
+		  
 
 OBJ_DIR	= obj
 
