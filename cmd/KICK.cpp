@@ -66,6 +66,10 @@ void	Server::KICK(std::string cmd, int fd)
 	reason = SplitCmdKick(cmd, tmp, user, fd);
 	if (user.empty())
 		{senderror(461, getClient(fd)->getNickName(), getClient(fd)->getFd(), " :Not enough parameters\r\n"); return;}
+	if (getClient(fd)->getNickName() == user) {
+		senderror(500, getClient(fd)->getNickName(), getClient(fd)->getFd(), " :You cannot kick yourself\r\n");
+		return;
+	}
 	for (size_t i = 0; i < tmp.size(); i++){ // search for the channel
 		if (getChannel(tmp[i])){// check if the channel exist
 			Channel *ch = getChannel(tmp[i]);
