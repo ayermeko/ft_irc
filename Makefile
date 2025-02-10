@@ -8,7 +8,7 @@ OBJ_DIR	= obj
 
 OBJS	= $(SRCS:%.cpp=$(OBJ_DIR)/%.o)
 
-CFLAGS	= -Wall -Wextra -Werror -std=c++98
+CFLAGS	= -g -Wall -Wextra -Werror -std=c++98
 
 CC		= g++
 

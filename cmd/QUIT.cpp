@@ -43,7 +43,7 @@ void Server::QUIT(std::string cmd, int fd)
 	std::string reason;
 	reason = SplitQuit(cmd);
     size_t i = 0;
-	while (i < _channels.size())
+	for (; i < _channels.size(); i++)
 	{
 		if (_channels[i].get_client(fd)){
 			_channels[i].remove_client(fd);
@@ -63,7 +63,6 @@ void Server::QUIT(std::string cmd, int fd)
 				_channels[i].sendTo_all(rpl);
 			}
 		}
-        i++;
 	}
     log(YELLOW, "Client <" + my_itos(_clients[i].getFd()) + "> is disconnected!");
 	rmChannels(fd);

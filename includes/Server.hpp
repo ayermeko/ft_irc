@@ -155,7 +155,7 @@ public:
 	void 						getCmdArgs(std::string cmd,std::string& name, std::string& modeset ,std::string &params);
 	//---------------------------//TOPIC CMD
 	std::string 				tTopic();
-	void 						Topic(std::string &cmd, int &fd);
+	void 						TOPIC(std::string &cmd, int &fd);
 	void 						Invite(std::string &cmd, int &fd);
 	std::string 				gettopic(std::string& input);
 	int 						getpos(std::string &cmd);
