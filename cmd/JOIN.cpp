@@ -103,12 +103,15 @@ void Server::NotExistCh(std::vector<std::pair<std::string, std::string> >&token,
         RPL_ENDOFNAMES(getClient(fd)->getNickName(),newChannel.getName()),fd);
 }
 
+
+
 void Server::JOIN(std::string cmd, int fd)
 {
-	std::vector<std::pair<std::string, std::string> > token;
-	// SplitJoin(token, cmd, fd);
-	if (!SplitJoin(token, cmd, fd))// ERR_NEEDMOREPARAMS (461) // if the channel name is empty
-		{senderror(461, getClient(fd)->getNickName(), getClient(fd)->getFd(), " :Not enough parameters\r\n"); return;}
+    std::vector<std::pair<std::string, std::string> > token;
+    if (!SplitJoin(token, cmd, fd)) {
+        senderror(461, getClient(fd)->getNickName(), getClient(fd)->getFd(), " :Not enough parameters\r\n");
+        return;
+    }
 	if (token.size() > 10) //ERR_TOOMANYTARGETS (407) // if more than 10 Channels
 		{senderror(407, getClient(fd)->getNickName(), getClient(fd)->getFd(), " :Too many channels\r\n"); return;}
 	for (size_t i = 0; i < token.size(); i++){
