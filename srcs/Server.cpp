@@ -282,8 +282,6 @@ void Server::parse_exec_cmd(std::string &cmd, int fd)
 			JOIN(cmd, fd);
 		else if (splited_cmd.size() && (splited_cmd[0] == "PRIVMSG" || splited_cmd[0] == "privmsg"))
 			PRIVMSG(cmd, fd);
-		else if (splited_cmd.size() && (splited_cmd[0] == "PART" || splited_cmd[0] == "part"))
-			PART(cmd, fd);
 		else if (splited_cmd.size() && (splited_cmd[0] == "TOPIC" || splited_cmd[0] == "topic"))
 			TOPIC(cmd, fd);
 		else if (splited_cmd.size() && (splited_cmd[0] == "MODE" || splited_cmd[0] == "mode"))

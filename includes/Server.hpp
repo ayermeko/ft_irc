@@ -131,9 +131,6 @@ public:
 	void						ExistCh(std::vector<std::pair<std::string, std::string> >&token, int i, int j, int fd);
 	void						NotExistCh(std::vector<std::pair<std::string, std::string> >&token, int i, int fd);
 	int							SearchForClients(std::string nickname);
-	//---------------------------//PART CMD
-	void						PART(std::string cmd, int fd);
-	int							SplitCmdPart(std::string cmd, std::vector<std::string> &tmp, std::string &reason, int fd);
 	//---------------------------//CKIK CMD
 	void						KICK(std::string cmd, int fd);
 	std::string 				SplitCmdKick(std::string cmd, std::vector<std::string> &tmp, std::string &user, int fd);
