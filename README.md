@@ -61,4 +61,13 @@ Build `ft_irc` from the source and install dependencies:
 2. **Navigate to the project directory**:
    ```bash
    cd ft_irc
+   
+### Usage
+
+Once installed, run the IRC server with the desired configuration. You can connect to it using any standard IRC client (e.g., HexChat, irssi).
+
+**Basic command-line usage:**
+
+```bash
+./irc_server <port> <password>
 
