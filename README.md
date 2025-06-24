@@ -56,3 +56,9 @@ Build `ft_irc` from the source and install dependencies:
 1. **Clone the repository**:
    ```bash
    git clone https://github.com/ayermeko/ft_irc
+   ### Installation
+
+2. **Navigate to the project directory**:
+   ```bash
+   cd ft_irc
+
