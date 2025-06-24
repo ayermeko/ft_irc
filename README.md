@@ -67,7 +67,17 @@ Build `ft_irc` from the source and install dependencies:
 Once installed, run the IRC server with the desired configuration. You can connect to it using any standard IRC client (e.g., HexChat, irssi).
 
 **Basic command-line usage:**
+  ```bash
+  ./irc_server <port> <password>
 
-```bash
-./irc_server <port> <password>
+### Testing
+To test your IRC server:
+
+Connect with multiple IRC clients
+
+Verify proper command responses (e.g., JOIN, NICK, PRIVMSG)
+
+Simulate permissions, modes, and message exchanges across multiple channels
+
+Check logs and ensure stability under concurrent usage
 
