@@ -70,6 +70,8 @@ Once installed, run the IRC server with the desired configuration. You can conne
   ```bash
   ./irc_server <port> <password>
 
+---
+
 ### Testing
 To test your IRC server:
 
